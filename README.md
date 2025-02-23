@@ -1,10 +1,10 @@
 # DoctorRV
 
 ## 1- Diagramme de classe :
-![image](https://github.com/user-attachments/assets/5790d653-8358-4d59-ae2e-7710c2e4b28e)
+![image](https://github.com/user-attachments/assets/e16a9f45-2857-444d-a4fb-d6081965445d)
 
 ## 2- Diagramme de cas d'utilisation :
-![image](https://github.com/user-attachments/assets/d16f2497-bf7d-4f38-ad2e-4d6f1e465090)
+![image](https://github.com/user-attachments/assets/5131b189-1a15-4fc8-891c-8445fc931578)
 
 ## 3- Diagramme de sequence :
-<img width="326" alt="414322917-b878412f-d721-4cda-b836-8c8ab9338098" src="https://github.com/user-attachments/assets/14a16e99-0fd7-49fb-8b56-7c898267360a" />
+![image](https://github.com/user-attachments/assets/bc66b0d8-288b-4898-b87e-09420af8c772)
