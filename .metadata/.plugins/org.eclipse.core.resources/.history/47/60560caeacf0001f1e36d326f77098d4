@@ -1,0 +1,68 @@
+package conn.admin.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import conn.daw.Appointmentdaw;
+import conn.db.DBconnect;
+import conn.entity.Appointment;
+import jakarta.servlet.annotation.WebServlet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@WebServlet("/AppointmentServlet")
+public class AppointmentServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private static final Logger logger = Logger.getLogger(AppointmentServlet.class.getName());
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Récupérer les paramètres du formulaire
+        String fullname = req.getParameter("fullname");
+        String gender = req.getParameter("gender");
+        String age = req.getParameter("age");
+        String appoint_date = req.getParameter("appoint_date");
+        String email = req.getParameter("email");
+        String phno = req.getParameter("phno");
+        String diseases = req.getParameter("diseases");
+        String spec = req.getParameter("spec");
+        String address = req.getParameter("address");
+
+        // Vérification des paramètres
+        if (fullname == null || gender == null || age == null || appoint_date == null ||
+            email == null || phno == null || diseases == null || spec == null || address == null) {
+            logger.log(Level.WARNING, "Un ou plusieurs paramètres manquants.");
+            req.getSession().setAttribute("errorMsg", "Missing required parameters.");
+            resp.sendRedirect("user_appointment.jsp");
+            return;
+        }
+
+        // Créer un objet Appointment
+        Appointment ap = new Appointment(fullname, gender, age, appoint_date, email, phno, diseases, spec, address);
+
+        // Instancier le DAO pour ajouter le rendez-vous
+        Appointmentdaw dao = new Appointmentdaw(DBconnect.getConn());
+        HttpSession session = req.getSession();
+
+        try {
+            // Ajouter le rendez-vous dans la base de données
+            if (dao.AddAppointment(ap)) {
+                // En cas de succès
+                session.setAttribute("succMsg", "Appointment Successfully added");
+            } else {
+                // En cas d'échec
+                session.setAttribute("errorMsg", "Something went wrong on the server");
+            }
+        } catch (Exception e) {
+            // Loguer l'erreur et afficher un message générique
+            logger.log(Level.SEVERE, "Erreur lors de l'ajout du rendez-vous", e);
+            session.setAttribute("errorMsg", "An error occurred while processing your request");
+        }
+
+        // Rediriger après l'exécution pour éviter l'envoi de données avant la redirection
+        resp.sendRedirect("user_appointment.jsp");
+    }
+}
